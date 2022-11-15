@@ -7,8 +7,8 @@ const config = new DataSource({
   username: 'root',
   password: 'password',
   database: 'trybengcash',
-  entities: ['src/entity/*.ts'],
-  migrations: ['src/migrations/*.ts'],
+  entities: ['src/entities/*.{js,ts}'],
+  migrations: ['src/migrations/*.{js,ts}'],
   logging: true,
   synchronize: true,
 })

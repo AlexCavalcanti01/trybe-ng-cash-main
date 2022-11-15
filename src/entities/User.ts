@@ -3,7 +3,7 @@ import {
   Column,
   PrimaryGeneratedColumn,
   OneToOne,
-  JoinTable,
+  JoinColumn,
 } from 'typeorm'
 import { Account } from './Account'
 
@@ -12,13 +12,13 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column({ unique: true, nullable: false })
+  @Column({ unique: true })
   username: string
 
   @Column()
   password: string
 
   @OneToOne((type) => Account)
-  @JoinTable({ name: 'account_id' })
+  @JoinColumn({ name: 'account_id' })
   account: Account
 }
