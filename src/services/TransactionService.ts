@@ -33,7 +33,7 @@ export class TransactionService {
     const debitedAccount = user.account
     const creditedAccount = creditedUser.account
 
-    await accountService.transferFound(debitedAccount, creditedAccount, amount)
+    await accountService.transferFounds(debitedAccount, creditedAccount, amount)
 
     const transaction = this.repository.create({
       creditedAccount,

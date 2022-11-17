@@ -13,7 +13,6 @@ class TransactionController {
   handleCashOut = async (req: Request, res: Response) => {
     const { username, amount } = req.body
     const { userId } = req.params
-
     try {
       const transaction = await transactionService.transferFounds(
         userId,

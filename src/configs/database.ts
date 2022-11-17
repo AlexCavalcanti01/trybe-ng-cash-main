@@ -9,7 +9,7 @@ const config = new DataSource({
   database: 'trybengcash',
   entities: ['src/entities/*.{js,ts}'],
   migrations: ['src/migrations/*.{js,ts}'],
-  logging: true,
+  logging: false,
   synchronize: true,
 })
 

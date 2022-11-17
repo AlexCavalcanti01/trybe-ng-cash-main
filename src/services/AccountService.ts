@@ -18,7 +18,7 @@ export class AccountService {
     return this.repository.findOne({ where: { id } })
   }
 
-  async transferFound(
+  async transferFounds(
     debitedAccount: Account,
     creditedAccount: Account,
     amount: number
@@ -26,7 +26,7 @@ export class AccountService {
     const isSameAccount = debitedAccount.id === creditedAccount.id
 
     if (isSameAccount) {
-      throw new Error('You can`t transfer founds to your own account')
+      throw new Error("You can't transfer founds to your own account")
     }
 
     const isBalanceLowerThanCashOutRequest = debitedAccount.balance < amount

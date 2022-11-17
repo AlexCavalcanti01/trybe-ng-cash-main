@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt'
 import { addDays, addHours, compareAsc } from 'date-fns'
 import jwt, { JwtPayload } from 'jsonwebtoken'
-import { decode } from 'punycode'
 
 export class AuthenticationService {
   private SALT = 10
@@ -38,7 +37,6 @@ export class AuthenticationService {
 
   decryptToken(token: string) {
     var decoded = jwt.verify(token, this.JWT_SECRET_KEY)
-
     if (!decoded) {
       throw new Error('Token not valid')
     }
