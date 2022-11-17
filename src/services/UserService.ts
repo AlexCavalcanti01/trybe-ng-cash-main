@@ -1,4 +1,4 @@
-import { Equal, Repository } from 'typeorm'
+import { Repository } from 'typeorm'
 import { User } from '../entities/User'
 import DataSource from '../configs/database'
 import accountService, { AccountService } from './AccountService'
@@ -26,7 +26,7 @@ export class UserService {
       throw new Error('User not found')
     }
 
-    const doesPasswordMatch = this.authenticationService.compare(
+    const doesPasswordMatch = await this.authenticationService.compare(
       persistedUser.password,
       password
     )
@@ -37,16 +37,10 @@ export class UserService {
 
     const token = this.authenticationService.encodeToken(persistedUser.id)
 
-    console.log(token)
-
     return { token }
   }
 
   async create(username: string, password: string): Promise<User> {
-    if (username.length < 3) {
-      throw new Error('Username should be at last length 3')
-    }
-
     const persistedUser = await this.userRepository.find({
       where: { username },
     })
@@ -76,6 +70,7 @@ export class UserService {
     if (!user) {
       throw new Error('User not found')
     }
+
     return user.account.balance
   }
 

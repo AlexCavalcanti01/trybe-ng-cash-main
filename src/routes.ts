@@ -2,8 +2,19 @@ import { Router, Request, Response, NextFunction } from 'express'
 import TransactionController from './controllers/TransactionController'
 import UserController from './controllers/UserController'
 import authenticationService from './services/AuthenticationService'
+import SigninValidation from './validations/SigninValidation'
 
 const router = Router()
+
+const validate =
+  (Schema) => async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await Schema.validate(req)
+      return next()
+    } catch (err) {
+      return res.status(400).json({ message: err.message })
+    }
+  }
 
 const takeUser = (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers.token as string
@@ -18,8 +29,10 @@ const takeUser = (req: Request, res: Response, next: NextFunction) => {
   next()
 }
 
-router.post('/users', (req: Request, res: Response) =>
-  UserController.store(req, res)
+router.post(
+  '/users',
+  validate(SigninValidation),
+  (req: Request, res: Response) => UserController.store(req, res)
 )
 
 router.post('/users/token/validate', (req: Request, res: Response) =>

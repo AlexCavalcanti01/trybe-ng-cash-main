@@ -24,7 +24,6 @@ export class TransactionService {
     const user = await this.userService.findById(userId)
 
     const creditedUser = await this.userService.findByUsername(creditedUsername)
-    console.log(creditedUsername)
 
     if (!user || !creditedUser) {
       throw new Error('User not found')
