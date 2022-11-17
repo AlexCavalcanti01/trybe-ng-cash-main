@@ -2,24 +2,24 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
   CreateDateColumn,
-  JoinTable,
+  JoinColumn,
+  ManyToOne,
 } from 'typeorm'
 import { Account } from './Account'
 
 @Entity('transactions')
-export class User {
+export class Transaction {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @OneToOne((type) => Account)
-  @JoinTable({ name: 'debited_account_id' })
-  debitedAccountId: Account
+  @ManyToOne((type) => Account)
+  @JoinColumn({ name: 'debited_account_id', referencedColumnName: 'id' })
+  debitedAccount: Account
 
-  @OneToOne((type) => Account)
-  @JoinTable({ name: 'credited_account_id' })
-  creditedAccountId: Account
+  @ManyToOne(() => Account)
+  @JoinColumn({ name: 'credited_account_id', referencedColumnName: 'id' })
+  creditedAccount: Account
 
   @Column()
   value: number

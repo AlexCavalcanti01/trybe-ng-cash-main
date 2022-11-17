@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm'
+import { Equal, Repository } from 'typeorm'
 import { User } from '../entities/User'
 import DataSource from '../configs/database'
 import accountService, { AccountService } from './AccountService'
@@ -67,8 +67,43 @@ export class UserService {
     return this.userRepository.save(user)
   }
 
+  async getBalance(userId: string): Promise<number> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: { account: true },
+    })
+
+    if (!user) {
+      throw new Error('User not found')
+    }
+    return user.account.balance
+  }
+
   validateToken(token: string): boolean {
     return !!this.authenticationService.isTokenExpired(token)
+  }
+
+  async findById(id: string): Promise<User> {
+    return this.userRepository.findOne({
+      where: { id },
+      relations: { account: true },
+    })
+  }
+
+  async findByUsername(username: string): Promise<User> {
+    return this.userRepository.findOne({
+      where: { username: username },
+      relations: { account: true },
+    })
+  }
+
+  async findByUsernameWithAllInfo(id: string): Promise<User> {
+    return this.userRepository.findOne({
+      where: { id },
+      relations: {
+        account: { creditedTransactions: true, debitedTransactions: true },
+      },
+    })
   }
 }
 

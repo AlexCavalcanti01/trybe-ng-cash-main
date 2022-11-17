@@ -1,4 +1,3 @@
-import { isValid } from 'date-fns/esm'
 import { Request, Response } from 'express'
 import userService, { UserService } from '../services/UserService'
 
@@ -29,6 +28,11 @@ class UserController {
     } catch (e) {
       return res.status(400).json({ message: e.message })
     }
+  }
+
+  getBalance = async (req: Request, res: Response): Promise<Response> => {
+    const balance = await userService.getBalance(req.params.userId)
+    return res.json({ balance })
   }
 }
 

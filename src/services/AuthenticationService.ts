@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt'
 import { addDays, addHours, compareAsc } from 'date-fns'
 import jwt, { JwtPayload } from 'jsonwebtoken'
+import { decode } from 'punycode'
 
 export class AuthenticationService {
   private SALT = 10
@@ -33,6 +34,15 @@ export class AuthenticationService {
     const tokenTime = new Date((decoded as JwtPayload).time)
     const expirationDate = addHours(tokenTime, 24)
     return compareAsc(expirationDate, new Date()) >= 0
+  }
+
+  decryptToken(token: string) {
+    var decoded = jwt.verify(token, this.JWT_SECRET_KEY)
+
+    if (!decoded) {
+      throw new Error('Token not valid')
+    }
+    return decoded as { time: Date; userId: string }
   }
 }
 
